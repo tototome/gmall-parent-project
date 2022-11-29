@@ -14,17 +14,17 @@
         <module>module-management-service</module>
         <module>module-management-common</module>
         <module>test</module>
-
+        <module>module-management-service/module-service-gateway</module>
     </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>1.8</java.version>
+        <mybatis-plus.version>3.0.5</mybatis-plus.version>
         <cloud.version>Hoxton.RELEASE</cloud.version>
         <cloud.alibaba.version>0.2.2.RELEASE</cloud.alibaba.version>
         <gmall.version>1.0</gmall.version>
-        <mybatis-plus.version>3.0.5</mybatis-plus.version>
         <mysql.version>5.1.46</mysql.version>
         <swagger.version>2.7.0</swagger.version>
         <fastdfs.version>1.27.0.0</fastdfs.version>

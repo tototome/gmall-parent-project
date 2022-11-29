@@ -11,5 +11,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *
  */
 public interface BaseTrademarkMapper extends BaseMapper<BaseTrademark> {
-
 }

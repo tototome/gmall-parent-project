@@ -22,7 +22,7 @@
         <module>module-service-product</module>
         <module>module-service-task</module>
         <module>module-service-user</module>
-        <module>module-service-gateway</module>
+
     </modules>
 
     <properties>

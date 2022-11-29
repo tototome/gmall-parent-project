@@ -2,4 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.gmall.product.mapper.BaseAttrInfoMapper">
 
+
+
+    <resultMap id="attrInfoMap" type="com.atguigu.gmall.model.product.BaseAttrInfo">
+        <result column="id" property="id"/>
+        <result column="attr_name" property="attrName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_level" property="categoryLevel"/>
+        <!--注意封装到列表里面需要有 有列表里面存放对象的类型使用OfType-->
+        <collection property="attrValueList"  ofType="com.atguigu.gmall.model.product.BaseAttrValue">
+            <result column="bav_id" property="id"/>
+            <result column="value_name" property="valueName"/>
+            <result column="attr_id" property="attrId"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="getAttrInfoList" resultMap="attrInfoMap">
+        select bai.id,attr_name,category_id,category_level,bav.id bav_id,value_name,attr_id from gmall_product.base_attr_info bai Left JOIN base_attr_value bav
+        on bai.id=bav.attr_id
+        <where>
+            <if test="category1Id != null and category1Id != 0">
+                or (category_id=#{category1Id} and category_level=1)
+            </if>
+            <if test="category2Id != null and category2Id != 0">
+                or (category_id=#{category2Id} and category_level=2)
+            </if>
+            <if test="category3Id != null and category3Id != 0">
+                or (category_id=#{category3Id} and category_level=3)
+            </if>
+        </where>
+    </select>
+
 </mapper>

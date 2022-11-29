@@ -6,6 +6,8 @@ import com.atguigu.gmall.product.service.BaseSaleAttrService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 基本销售属性表 服务实现类
@@ -17,4 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseSaleAttrImplService extends ServiceImpl<BaseSaleAttrMapper, BaseSaleAttr> implements BaseSaleAttrService {
 
+    @Override
+    public List<BaseSaleAttr> getBaseSaleAttrList() {
+
+        return baseMapper.selectList(null);
+
+
+    }
 }

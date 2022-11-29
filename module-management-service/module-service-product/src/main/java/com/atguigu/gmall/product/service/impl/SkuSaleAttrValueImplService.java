@@ -6,6 +6,10 @@ import com.atguigu.gmall.product.service.SkuSaleAttrValueService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * sku销售属性值 服务实现类
@@ -17,4 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SkuSaleAttrValueImplService extends ServiceImpl<SkuSaleAttrValueMapper, SkuSaleAttrValue> implements SkuSaleAttrValueService {
 
+    @Override
+    public Map getSkuValueIdsMap(Long spuId) {
+        Map<String, String> hashMap = new HashMap<>();
+        List<Map<String, String>> skuValueIdsMap =baseMapper.getSkuValueIdsMap(spuId);
+        skuValueIdsMap.forEach(map -> {
+           hashMap.put(map.get("sale_attr_value_id"),map.get("sku_id"));
+        });
+        return hashMap;
+    }
 }

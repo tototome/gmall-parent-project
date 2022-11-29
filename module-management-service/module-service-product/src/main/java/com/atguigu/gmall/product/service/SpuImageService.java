@@ -3,6 +3,8 @@ package com.atguigu.gmall.product.service;
 import com.atguigu.gmall.model.product.SpuImage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 商品图片表 服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SpuImageService extends IService<SpuImage> {
 
+    List<SpuImage> getImageList(Long spuId);
 }
