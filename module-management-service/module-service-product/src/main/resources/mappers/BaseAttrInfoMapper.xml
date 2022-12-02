@@ -3,14 +3,13 @@
 <mapper namespace="com.atguigu.gmall.product.mapper.BaseAttrInfoMapper">
 
 
-
     <resultMap id="attrInfoMap" type="com.atguigu.gmall.model.product.BaseAttrInfo">
         <result column="id" property="id"/>
         <result column="attr_name" property="attrName"/>
         <result column="category_id" property="categoryId"/>
         <result column="category_level" property="categoryLevel"/>
         <!--注意封装到列表里面需要有 有列表里面存放对象的类型使用OfType-->
-        <collection property="attrValueList"  ofType="com.atguigu.gmall.model.product.BaseAttrValue">
+        <collection property="attrValueList" ofType="com.atguigu.gmall.model.product.BaseAttrValue">
             <result column="bav_id" property="id"/>
             <result column="value_name" property="valueName"/>
             <result column="attr_id" property="attrId"/>
@@ -19,7 +18,8 @@
     </resultMap>
 
     <select id="getAttrInfoList" resultMap="attrInfoMap">
-        select bai.id,attr_name,category_id,category_level,bav.id bav_id,value_name,attr_id from gmall_product.base_attr_info bai Left JOIN base_attr_value bav
+        select bai.id,attr_name,category_id,category_level,bav.id bav_id,value_name,attr_id from
+        gmall_product.base_attr_info bai Left JOIN base_attr_value bav
         on bai.id=bav.attr_id
         <where>
             <if test="category1Id != null and category1Id != 0">
@@ -32,6 +32,16 @@
                 or (category_id=#{category3Id} and category_level=3)
             </if>
         </where>
+    </select>
+
+    <select id="getAttrList" resultMap="attrInfoMap">
+        SELECT bav.attr_id as id, bai.attr_name, bai.category_id, bai.category_level, bav.attr_id, bav.value_name,bav.id bav_id
+        from sku_attr_value sav
+                 INNER JOIN base_attr_info bai
+                            on sav.attr_id = bai.id
+                 INNER JOIN base_attr_value bav on bai.id = bav.attr_id
+        WHERE sku_id = #{skuId}
+          AND sav.value_id = bav.id
     </select>
 
 </mapper>

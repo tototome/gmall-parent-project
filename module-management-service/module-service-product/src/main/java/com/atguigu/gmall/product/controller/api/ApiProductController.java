@@ -3,13 +3,8 @@ package com.atguigu.gmall.product.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.common.result.Result;
-import com.atguigu.gmall.model.product.BaseCategoryView;
-import com.atguigu.gmall.model.product.SkuInfo;
-import com.atguigu.gmall.model.product.SpuSaleAttr;
-import com.atguigu.gmall.product.service.BaseCategoryViewService;
-import com.atguigu.gmall.product.service.SkuInfoService;
-import com.atguigu.gmall.product.service.SkuSaleAttrValueService;
-import com.atguigu.gmall.product.service.SpuSaleAttrService;
+import com.atguigu.gmall.model.product.*;
+import com.atguigu.gmall.product.service.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +27,10 @@ public class ApiProductController {
     SpuSaleAttrService spuSaleAttrService;
     @Autowired
     SkuSaleAttrValueService skuSaleAttrValueService;
+    @Autowired
+    BaseAttrInfoService baseAttrInfoService;
+    @Autowired
+    BaseTrademarkService baseTrademarkService;
 
     @GetMapping("/inner/getSkuInfo/{skuId}")
     public Result<SkuInfo> getSkuInfo(@PathVariable("skuId") Long skuId) {
@@ -52,6 +51,12 @@ public class ApiProductController {
         return Result.ok(skuPrice);
     }
 
+    @GetMapping("/inner/getAttrList/{skuId}")
+    public  Result<List<BaseAttrInfo>> getAttrList(@PathVariable("skuId") Long skuId){
+        List<BaseAttrInfo> attrList=baseAttrInfoService.getAttrList(skuId);
+        return Result.ok(attrList);
+    }
+
     @GetMapping("/inner/getSpuSaleAttrListCheckBySku/{skuId}/{spuId}")
     public Result<List<SpuSaleAttr>> getSpuSaleAttrListCheckBySku(@PathVariable("skuId") Long skuId,
                                                           @PathVariable("spuId") Long spuId) {
@@ -69,6 +74,11 @@ public class ApiProductController {
     public Result<List<JSONObject>>  getAllCategoryForPortal(){
      List<JSONObject>   categoryForPortal=baseCategoryViewService.getAllCategoryForPortal();
         return Result.ok(categoryForPortal);
+    }
+    @GetMapping("inner/get/{tmId}")
+    public  Result<BaseTrademark> getById(@PathVariable("tmId") Long tmId){
+        BaseTrademark baseTrademark = baseTrademarkService.getById(tmId);
+        return  Result.ok(baseTrademark);
     }
 
 }

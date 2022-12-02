@@ -1,6 +1,7 @@
 package com.atguigu.gmall.product.service.impl;
 
 import com.atguigu.gmall.model.product.SkuSaleAttrValue;
+import com.atguigu.gmall.product.aopcache.GmallCache;
 import com.atguigu.gmall.product.mapper.SkuSaleAttrValueMapper;
 import com.atguigu.gmall.product.service.SkuSaleAttrValueService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class SkuSaleAttrValueImplService extends ServiceImpl<SkuSaleAttrValueMapper, SkuSaleAttrValue> implements SkuSaleAttrValueService {
 
     @Override
+    @GmallCache(prefix = "svm")
     public Map getSkuValueIdsMap(Long spuId) {
         Map<String, String> hashMap = new HashMap<>();
         List<Map<String, String>> skuValueIdsMap =baseMapper.getSkuValueIdsMap(spuId);

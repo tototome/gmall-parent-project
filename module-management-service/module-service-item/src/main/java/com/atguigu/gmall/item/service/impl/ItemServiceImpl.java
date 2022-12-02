@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.item.service.ItemService;
 import com.atguigu.gmall.item.util.ThreadPoolUtil;
+import com.atguigu.gmall.list.client.ListFeignClient;
 import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
@@ -23,7 +24,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ItemServiceImpl implements ItemService {
     @Autowired
     ProductFeignClient productFeignClient;
-
+    @Autowired
+    private ListFeignClient listFeignClient;
     @Override
     public Result<Map<String, Object>> getItem(Long skuId) throws ExecutionException, InterruptedException {
         //SkuInfo skuInfo = productFeignClient.getSkuInfo(skuId).getData();
@@ -59,6 +61,10 @@ public class ItemServiceImpl implements ItemService {
         CompletableFuture<List<SpuSaleAttr>> listCompletableFuture = skuInfoCompletableFuture.thenApplyAsync((SkuInfo skuInfo) -> {
             Long spuId = skuInfo.getSpuId();
             return productFeignClient.getSpuSaleAttrListCheckBySku(skuId, spuId).getData();
+        }, threadPoolExecutor);
+        // -------------------附加任务：增加商品热度值-------------------
+        CompletableFuture.runAsync(()->{
+            listFeignClient.incrGoodsHotScore(skuId);
         }, threadPoolExecutor);
 
         SkuInfo skuInfo = skuInfoCompletableFuture.get();

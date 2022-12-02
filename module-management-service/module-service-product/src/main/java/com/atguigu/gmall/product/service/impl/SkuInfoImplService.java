@@ -4,6 +4,7 @@ import com.atguigu.gmall.model.product.SkuAttrValue;
 import com.atguigu.gmall.model.product.SkuImage;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SkuSaleAttrValue;
+import com.atguigu.gmall.product.aopcache.GmallCache;
 import com.atguigu.gmall.product.mapper.SkuAttrValueMapper;
 import com.atguigu.gmall.product.mapper.SkuImageMapper;
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
@@ -79,6 +80,7 @@ public class SkuInfoImplService extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     }
 
     @Override
+    @GmallCache(prefix = "sku")
     public SkuInfo getSkuInfo(Long skuId) {
         SkuInfo skuInfo = baseMapper.selectById(skuId);
         List<SkuImage> skuImageList = skuImageMapper.selectList(new QueryWrapper<SkuImage>().eq("sku_id", skuId));

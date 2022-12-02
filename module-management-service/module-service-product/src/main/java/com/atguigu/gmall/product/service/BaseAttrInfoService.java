@@ -22,5 +22,5 @@ public interface BaseAttrInfoService extends IService<BaseAttrInfo> {
     void deleteById(Long id);
 
 
-
+    List<BaseAttrInfo> getAttrList(Long skuId);
 }

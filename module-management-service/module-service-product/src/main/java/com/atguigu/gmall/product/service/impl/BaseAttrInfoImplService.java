@@ -66,5 +66,12 @@ public class BaseAttrInfoImplService extends ServiceImpl<BaseAttrInfoMapper, Bas
         baseAttrValueMapper.delete(new QueryWrapper<BaseAttrValue>().eq("attr_id",id));
     }
 
+    @Override
+    public List<BaseAttrInfo> getAttrList(Long skuId) {
+
+        return   baseMapper.getAttrList(skuId);
+
+    }
+
 
 }

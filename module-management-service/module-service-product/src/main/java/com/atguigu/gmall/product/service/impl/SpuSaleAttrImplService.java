@@ -1,6 +1,7 @@
 package com.atguigu.gmall.product.service.impl;
 
 import com.atguigu.gmall.model.product.SpuSaleAttr;
+import com.atguigu.gmall.product.aopcache.GmallCache;
 import com.atguigu.gmall.product.mapper.SpuSaleAttrMapper;
 import com.atguigu.gmall.product.service.SpuSaleAttrService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,6 +29,7 @@ public class SpuSaleAttrImplService extends ServiceImpl<SpuSaleAttrMapper, SpuSa
     }
 
     @Override
+    @GmallCache(prefix = "sal")
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
        List<SpuSaleAttr> spuSaleAttrList=spuSaleAttrMapper.getSpuSaleAttrListCheckBySku(skuId,spuId);
         return spuSaleAttrList;
