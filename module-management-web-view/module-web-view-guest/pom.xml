@@ -46,6 +46,12 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.atguigu</groupId>
+            <artifactId>module-feign-api-list</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- 服务注册 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

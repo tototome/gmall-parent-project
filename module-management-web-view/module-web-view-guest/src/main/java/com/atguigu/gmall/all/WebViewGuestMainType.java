@@ -10,8 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages= {"com.atguigu.gmall"})
-@ComponentScan(value = {"com.atguigu.gmall.item.client","com.atguigu.gmall.product.client","com.atguigu.gmall.all"})
+@EnableFeignClients(basePackages = {"com.atguigu.gmall"})
+@ComponentScan(value = {"com.atguigu.gmall.item.client",
+        "com.atguigu.gmall.product.client",
+        "com.atguigu.gmall.all",
+        "com.atguigu.gmall.list.client" })
 public class WebViewGuestMainType {
 
     public static void main(String[] args) {

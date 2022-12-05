@@ -62,7 +62,7 @@ public class ItemServiceImpl implements ItemService {
             Long spuId = skuInfo.getSpuId();
             return productFeignClient.getSpuSaleAttrListCheckBySku(skuId, spuId).getData();
         }, threadPoolExecutor);
-        // -------------------附加任务：增加商品热度值-------------------
+        // 增加商品热度值-------------------
         CompletableFuture.runAsync(()->{
             listFeignClient.incrGoodsHotScore(skuId);
         }, threadPoolExecutor);
