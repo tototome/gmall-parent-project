@@ -224,7 +224,7 @@ public class SearchServiceImpl implements SearchService {
                 .subAggregation(AggregationBuilders.terms("tmNameAgg").field("tmName"))
                 .subAggregation(AggregationBuilders.terms("tmLogoUrlAgg").field("tmLogoUrl"));
 
-        //平台属性聚合 nested类型数据
+        //平台属性聚合 nested类型数据 要使用xxx.xxx 注意Nest字段！！！！！
         TermsAggregationBuilder attrsAggregationBuilder = AggregationBuilders.terms("attrIdAgg")
                 .field("attrs.attrId")
                 .subAggregation(AggregationBuilders.terms("attrNameAgg").field("attrs.attrName"))

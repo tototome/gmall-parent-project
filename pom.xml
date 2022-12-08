@@ -13,7 +13,6 @@
         <module>module-management-feign</module>
         <module>module-management-service</module>
         <module>module-management-common</module>
-        <module>test</module>
         <module>module-management-service/module-service-gateway</module>
     </modules>
 

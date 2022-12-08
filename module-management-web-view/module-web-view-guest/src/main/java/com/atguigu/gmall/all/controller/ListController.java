@@ -9,10 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller
 public class ListController {
@@ -20,8 +18,9 @@ public class ListController {
     private ListFeignClient listFeignClient;
 
     @GetMapping("/list.html")
-    public String search(SearchParam searchParam, Model model) throws Throwable {
-
+    public String search(SearchParam searchParam, Model model, HttpServletRequest request) throws Throwable {
+        Enumeration<String> userId = request.getHeaders("userId");
+        System.out.println();
         //调用接口方法
         Result<Map> list = listFeignClient.list(searchParam);
         //返回值设置到 请求域中
