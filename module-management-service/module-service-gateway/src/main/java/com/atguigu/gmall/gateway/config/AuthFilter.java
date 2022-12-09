@@ -170,8 +170,7 @@ public class AuthFilter implements GlobalFilter {
         // 1、读取用户的临时 id
         String userTempId = getUserTempId(exchange.getRequest());
         if (USER_TEMP_ID_NOT_EXISTS.equals(userTempId)) {
-
-            return chain.filter(exchange);
+            userTempId=null;
         }
 
         // 2、如果临时 id 存在，则设置到请求消息头
@@ -180,6 +179,10 @@ public class AuthFilter implements GlobalFilter {
                         .mutate()
                         .header("userTempId", userTempId)
                         .build();
+        String checkLogin = isCheckLogin(exchange.getRequest());
+        if (!checkLogin.equals(USER_NOT_LOGIN)){
+            exchange.getRequest().mutate().header("userId",checkLogin).build();
+        }
 
         // 2、把当前请求放行
         return chain.filter(

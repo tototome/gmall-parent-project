@@ -14,7 +14,7 @@ public interface ListFeignClient {
      Result<Void> getGoods(@PathVariable("skuId") Long skuId);
 
 
-    @GetMapping("/api/listinner/remove/goods/from/elastic/search/{skuId}")
+    @GetMapping("/api/list/inner/remove/goods/from/elastic/search/{skuId}")
     Result<Void> removeGoodsFromElasticSearch(@PathVariable("skuId") Long skuId) ;
 
     //热度功能 使用redis 每次访问商品数据的时候的时候调用
