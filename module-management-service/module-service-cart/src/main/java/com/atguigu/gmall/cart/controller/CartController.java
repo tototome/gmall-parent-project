@@ -4,6 +4,8 @@ import com.atguigu.gmall.cart.service.CartService;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.common.util.AuthContextHolder;
 import com.atguigu.gmall.model.cart.CartInfo;
+import com.atguigu.gmall.model.user.UserAddress;
+import com.atguigu.gmall.model.user.UserInfo;
 import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -83,5 +85,14 @@ public class CartController {
         }
 
         return Result.ok();
+    }
+
+    @GetMapping("/auth/get/checked/cart")
+    public Result<List<CartInfo>> getCheckedCart(@RequestHeader("userId") Long userId) {
+        if (StringUtils.isEmpty(userId)) {
+            return Result.<List<CartInfo>>fail().message("没有获取到有效 userId！");
+        }
+        List<CartInfo> cartCheckInfoList = cartService.getCheckedCart(userId);
+        return Result.ok(cartCheckInfoList);
     }
 }

@@ -3,6 +3,7 @@ package com.atguigu.gmall.cart.service.impl;
 import com.atguigu.gmall.cart.mapper.CartInfoMapper;
 import com.atguigu.gmall.cart.service.CartService;
 import com.atguigu.gmall.common.constant.RedisConst;
+import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.cart.CartInfo;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.product.client.ProductFeignClient;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -120,22 +122,39 @@ public class CartServiceImpl implements CartService {
         operator.delete(skuId.toString());
     }
 
+    @Override
+    public List<CartInfo> getCheckedCart(Long userId) {
+        //List<CartInfo> cartInfoList = cartInfoMapper.selectList(new QueryWrapper<CartInfo>().eq("user_id", userId));
+        //我们对购物车做的有缓存 从redis中拿数据 拿不到从数据库拿 缓存可能会过期
+        BoundHashOperations boundHashOperations = redisTemplate.boundHashOps(getCartKey(userId.toString()));
+        List<CartInfo> cartInfoList = boundHashOperations.values();
+        if (CollectionUtils.isEmpty(cartInfoList)) {
+            cartInfoList = cartInfoMapper.selectList(new QueryWrapper<CartInfo>().eq("user_id", userId));
+        }
+
+        List<CartInfo> cartCheckedInfo = cartInfoList.stream().filter(cartInfo -> {
+            return cartInfo.getIsChecked() == 1;
+        }).collect(Collectors.toList());
+        return cartCheckedInfo;
+
+    }
+
     private List<CartInfo> getMergedCartList(String userId, String userTempId) {
-            //   代码走到这里 所处 登陆状态
+        //   代码走到这里 所处 登陆状态
         List<CartInfo> cartFormalList = cartListFromCache(userId);
         List<CartInfo> cartTempList = cartListFromCache(userTempId);
-        if (CollectionUtils.isEmpty(cartFormalList)&&CollectionUtils.isEmpty(cartTempList)){
+        if (CollectionUtils.isEmpty(cartFormalList) && CollectionUtils.isEmpty(cartTempList)) {
             return new ArrayList<>();
         }
-        if (!CollectionUtils.isEmpty(cartTempList)){
-            if (CollectionUtils.isEmpty(cartFormalList)){
+        if (!CollectionUtils.isEmpty(cartTempList)) {
+            if (CollectionUtils.isEmpty(cartFormalList)) {
                 for (CartInfo cartInfo : cartTempList) {
                     cartInfo.setUserId(userId);
                     cartFormalList.add(cartInfo);
                 }
                 //return cartTempList
                 //这里可以写个异步 更新数据库
-            }else {
+            } else {
                 // 判断两个购物车是否有相同商品
                 // 可以将formal转成map 使用的map.contain 判断key在不在里面
                 Map<String, CartInfo> cartFormalMap = cartFormalList.stream().collect(Collectors.toMap(cartInfo -> cartInfo.getSkuId().toString()
@@ -206,7 +225,9 @@ public class CartServiceImpl implements CartService {
             //数据库有数据设置到redis中
             for (CartInfo cartInfo :
                     cartList) {
-                    hashOperations.put(getCartKey(userId),cartInfo.getSkuId(),cartInfo);
+                BigDecimal skuPrice = productFeignClient.getSkuPrice(cartInfo.getSkuId()).getData();
+                cartInfo.setSkuPrice(skuPrice);
+                hashOperations.put(getCartKey(userId).toString(), cartInfo.getSkuId().toString(), cartInfo);
             }
         }
         return cartList;

@@ -14,6 +14,7 @@
         <module>module-management-service</module>
         <module>module-management-common</module>
         <module>module-management-service/module-service-gateway</module>
+        <module>ware-manage</module>
     </modules>
 
     <properties>

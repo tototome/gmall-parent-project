@@ -12,4 +12,6 @@ public interface CartService {
     void modifyCartCheckStatus(String userId, Long skuId, Integer isChecked);
 
     void removeCartItem(String userId, Long skuId);
+
+    List<CartInfo> getCheckedCart(Long userId);
 }

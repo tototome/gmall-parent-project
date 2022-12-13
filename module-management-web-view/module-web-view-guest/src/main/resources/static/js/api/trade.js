@@ -11,9 +11,9 @@ var trade = {
   },
 
   // 提交订单
-  submitOrder(order, tradeNo) {
+  submitOrder(order) {
     return request({
-      url: this.api_name + '/auth/submitOrder?tradeNo=' + tradeNo,
+      url: this.api_name + '/auth/submitOrder',
       method: 'post',
       data: order
     })

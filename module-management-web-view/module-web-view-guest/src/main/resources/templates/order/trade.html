@@ -250,7 +250,7 @@
 
 		data: {
             userAddressList: [[${userAddressList}]],
-            tradeNo: [[${tradeNo}]],
+            // tradeNo: [[${tradeNo}]],
 
             order: {
                 consignee:'',
@@ -281,7 +281,8 @@
             },
 
             submitOrder() {
-                trade.submitOrder(this.order, this.tradeNo).then(response => {
+				console.log(this.order)
+                trade.submitOrder(this.order).then(response => {
                     debugger
                     if (response.data.code == 200) {
                         window.location.href = 'http://payment.gmall.com/pay.html?orderId=' + response.data.data
@@ -301,7 +302,7 @@
                         this.order.consignee = item.consignee
                         this.order.consigneeTel = item.phoneNum
                         this.order.deliveryAddress = item.userAddress
-                        this.order.paymentWay = this.paymentWay
+                        // this.order.paymentWay = this.paymentWay
                     } else {
                         item.selected = 0
                     }

@@ -35,4 +35,6 @@ public class RedisConst {
     public static final int SECKILL__TIMEOUT = 60 * 60 * 1;
 
 
+    public static final String ORDER_SUBMIT_LOCK_KEY_PREFIX = "user:order:";
+    public static final String ORDER_SUBMIT_LOCK_KEY_SUFFIX =":lock" ;
 }
