@@ -1,6 +1,7 @@
 package com.atguigu.gmall.order.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.common.constant.RabbitConst;
 import com.atguigu.gmall.common.constant.RedisConst;
 import com.atguigu.gmall.common.result.Result;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,5 +96,32 @@ public class ApiOrderController {
             return Result.<Long>fail().message("您已经提交的订单我们正在拼命处理中，请勿重复提交订单！");
         }
 
+    }
+
+    @GetMapping("/auth/getPayOrderInfo/{orderId}")
+    public Result<Map<Object, Object>> getPayOrderInfoById(@PathVariable("orderId") Long orderId) {
+        OrderInfo orderInfo = orderService.getOrderInfo(orderId);
+        String outTradeNo = orderInfo.getOutTradeNo();
+        BigDecimal totalAmount = orderInfo.getTotalAmount();
+
+        Map<Object, Object> resultMap = new HashMap<>();
+        resultMap.put("id", outTradeNo);
+        resultMap.put("totalAmount", totalAmount);
+        return Result.ok(resultMap);
+    }
+    @GetMapping("/auth/getOrderInfoById/{orderId}")
+    public Result<OrderInfo> getOrderInfoById(@PathVariable("orderId") Long orderId){
+        OrderInfo orderInfo = orderService.getOrderInfo(orderId);
+        return  Result.ok(orderInfo);
+    }
+    @GetMapping("/auth/getOrderInfoByOutTradeNo/{outTradeNo}")
+    public Result<OrderInfo> OrderInfoByOutTradeNo(@PathVariable("outTradeNo")String outTradeNo){
+        OrderInfo orderInfo=orderService.getOrderInfoByOutTradeNo(outTradeNo);
+        return Result.ok(orderInfo);
+    };
+    @PostMapping("/orderSplit")
+    public List<JSONObject> doOrderSplit(@RequestParam("orderId") Long orderId, @RequestParam("wareSkuMap") String wareSkuMapListJson) {
+
+        return orderService.doOrderSplit(orderId, wareSkuMapListJson);
     }
 }
